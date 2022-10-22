@@ -1,23 +1,24 @@
-/*
-  Create cron event with cloudwatch
-*/
-
+############################################################################################################
+# Goal: Create a cron event with cloudwatch
+# Path: cloudwatch.tf
+# Schedule event
+############################################################################################################
 resource "aws_lambda_permission" "allow_cloudwatch" {
     statement_id = "AllowExecutionFromCloudWatch"
     action = "lambda:InvokeFunction"
     function_name = aws_lambda_function.simplification_lambda_function.function_name
     principal = "events.amazonaws.com"
-    source_arn = aws_cloudwatch_event_rule.test-lambda.arn
+    source_arn = aws_cloudwatch_event_rule.schedule-lambda.arn
 }
 
-resource "aws_cloudwatch_event_rule" "test-lambda" {
+resource "aws_cloudwatch_event_rule" "schedule-lambda" {
   name                  = "run-lambda-function"
   description           = "Schedule lambda function"
-  schedule_expression   = "rate(2 minutes)"
+  schedule_expression   = "rate(1440 minutes)"
 }
 
 resource "aws_cloudwatch_event_target" "lambda-function-target" {
   target_id = "lambda-function-target"
-  rule      = aws_cloudwatch_event_rule.test-lambda.name
+  rule      = aws_cloudwatch_event_rule.schedule-lambda.name
   arn       = aws_lambda_function.simplification_lambda_function.arn
 }

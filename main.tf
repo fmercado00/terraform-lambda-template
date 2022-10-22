@@ -28,4 +28,10 @@ resource "aws_lambda_function" "simplification_lambda_function" {
       }
     }
 
+      tags = {
+        cost_center = var.cost_center
+        environment = var.environment
+        project = var.project
+      }
+
 }
