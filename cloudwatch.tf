@@ -51,6 +51,12 @@ resource "aws_cloudwatch_metric_alarm" "error_alarm" {
   alarm_actions             = [aws_sns_topic.alarm_topic.arn]
   ok_actions                = [aws_sns_topic.alarm_topic.arn]
   insufficient_data_actions = [aws_sns_topic.alarm_topic.arn]
+
+  tags = {
+    cost_center = var.cost_center
+    environment = var.environment
+    project     = var.project
+  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "invocation_alarm" {
@@ -60,14 +66,20 @@ resource "aws_cloudwatch_metric_alarm" "invocation_alarm" {
   evaluation_periods  = "1"
   period              = "60"
   threshold           = "1"
-  
+
   namespace   = "AWS/Lambda"
   metric_name = "Invocations"
   statistic   = "Sum"
 
-  alarm_actions             = [aws_sns_topic.alarm_topic.arn]
-  ok_actions                = [aws_sns_topic.alarm_topic.arn]
+  alarm_actions = [aws_sns_topic.alarm_topic.arn]
+  ok_actions    = [aws_sns_topic.alarm_topic.arn]
   # insufficient_data_actions = [aws_sns_topic.alarm_topic.arn]
+
+  tags = {
+    cost_center = var.cost_center
+    environment = var.environment
+    project     = var.project
+  }
 }
 
 resource "aws_sns_topic" "alarm_topic" {
@@ -89,10 +101,16 @@ resource "aws_sns_topic" "alarm_topic" {
       }
     }
   })
+  tags = {
+    cost_center = var.cost_center
+    environment = var.environment
+    project     = var.project
+  }
 }
 
 resource "aws_sns_topic_subscription" "topic_email_subscription" {
   topic_arn = aws_sns_topic.alarm_topic.arn
   protocol  = "email"
   endpoint  = "fmercado00@gmail.com"
+
 }

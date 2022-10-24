@@ -16,6 +16,13 @@ data "aws_iam_policy_document" "lambda_assume_role_policy" {
 resource "aws_iam_role" "lambda_role" {
   name               = "simplification-lambda-lambdaRole"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
+
+
+  tags = {
+    cost_center = var.cost_center
+    environment = var.environment
+    project     = var.project
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "basic" {
