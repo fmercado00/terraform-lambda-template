@@ -38,20 +38,20 @@ resource "aws_cloudwatch_log_metric_filter" "error_log_metric_filter" {
   }
 }
 
-# resource "aws_cloudwatch_metric_alarm" "error_alarm" {
-#   alarm_name                = "error-alarm"
-#   alarm_description         = "Error >= 1"
-#   comparison_operator       = "GreaterThanOrEqualToThreshold"
-#   evaluation_periods        = "1"
-#   period                    = "60"
-#   threshold                 = "1"
-#   statistic                 = "Sum"
-#   metric_name               = aws_cloudwatch_log_metric_filter.error_log_metric_filter.metric_transformation[0].name
-#   namespace                 = aws_cloudwatch_log_metric_filter.error_log_metric_filter.metric_transformation[0].namespace
-#   alarm_actions             = [aws_sns_topic.alarm_topic.arn]
-#   ok_actions                = [aws_sns_topic.alarm_topic.arn]
-#   insufficient_data_actions = [aws_sns_topic.alarm_topic.arn]
-# }
+resource "aws_cloudwatch_metric_alarm" "error_alarm" {
+  alarm_name                = "error-alarm"
+  alarm_description         = "Error >= 1"
+  comparison_operator       = "GreaterThanOrEqualToThreshold"
+  evaluation_periods        = "1"
+  period                    = "60"
+  threshold                 = "1"
+  statistic                 = "Sum"
+  metric_name               = aws_cloudwatch_log_metric_filter.error_log_metric_filter.metric_transformation[0].name
+  namespace                 = aws_cloudwatch_log_metric_filter.error_log_metric_filter.metric_transformation[0].namespace
+  alarm_actions             = [aws_sns_topic.alarm_topic.arn]
+  ok_actions                = [aws_sns_topic.alarm_topic.arn]
+  insufficient_data_actions = [aws_sns_topic.alarm_topic.arn]
+}
 
 resource "aws_cloudwatch_metric_alarm" "invocation_alarm" {
   alarm_name          = "invocation-alarm"
